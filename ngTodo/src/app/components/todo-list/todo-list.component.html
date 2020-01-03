@@ -10,22 +10,26 @@
     <thead>
       <tr>
         <th>Task</th>
-        <th>Description</th>
+        <th>Mark</th>
         <th>Completed</th>
       </tr>
     </thead>
     <tbody>
       <tr *ngFor='let todo of todos'>
         <td (click)='displayTodo(todo)' >{{todo.task}}</td>
-        <td>{{todo.description}}</td>
+        <td><input type="checkbox" name="completed" [(ngModel)]="todo.completed" /></td>
         <td>{{todo.completed}}</td>
       </tr>
     </tbody>
     </table>
+    <form #addTask = "ngForm" *ngIf="!selected">
+      <input type="text" name="task" placeholder="Add new Task" [(ngModel)]="newTodo.task" />
+      <input type="submit" name="submit" value="Add" (click) = "addTodo()" >
+    </form>
 
   </div>
 
-  <div *ngIf="selected">
+  <div *ngIf="selected && !editTodo">
     <table>
       <tr>
         <th> ID </th>
@@ -45,7 +49,20 @@
       </tr>
       <tr>
         <td>
+          <button (click)='setEditTodo()'> Edit </button>
+        </td>
+        <td>
           <button (click)='displayTable()'> Back </button>
         </td>
       </tr>
     </table></div>
+
+    <div>
+      <form *ngIf="editTodo">
+        <input type="text" name="task" placeholder={{editTodo.task}} [(ngModel)]="editTodo.task" /><br>
+        <input type="text" name="description" placeholder={{editTodo.description}} [(ngModel)]="editTodo.description" /><br>
+        <input type="checkbox" name="completed" placeholder={{editTodo.completed}} [(ngModel)]="editTodo.completed" /><br>
+        <input type="submit" name="submit" value="Save" (click) = "updateTodo(editTodo)" >
+        <input type="submit" name="submit" value="Cancel" (click) = "resetTodo()" >
+      </form>
+    </div>
