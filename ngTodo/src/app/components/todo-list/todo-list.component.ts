@@ -1,3 +1,4 @@
+import { TodoService } from './../../services/todo.service';
 import { Component, OnInit } from '@angular/core';
 import { Todo } from 'src/app/models/todo';
 
@@ -13,15 +14,12 @@ export class TodoListComponent implements OnInit {
   newTodo = new Todo();
   editTodo = null;
 
-  todos: Todo[] = [
-    new Todo(1, 'Go round mums', '', false),
-    new Todo(2, 'Get Liz back', '', false),
-    new Todo(3, 'Sort life out', '', false)
-  ];
+  todos: Todo[] = [];
 
-  constructor() { }
+  constructor(private todoService: TodoService) { }
 
   ngOnInit() {
+    this.todos = this.todoService.index();
   }
 
 getNumTodos = function() {
@@ -36,17 +34,15 @@ displayTable() {
    this.selected = null;
 }
 
-generateId() {
-  return this.todos[this.todos.length - 1].id + 1;
-}
+// generateId() {
+//   return this.todos[this.todos.length - 1].id + 1;
+// }
 
 addTodo() {
-  this.newTodo.id = this.generateId();
-  this.newTodo.completed = false;
-  this.newTodo.description = '';
-  this.todos.push(this.newTodo);
-  this.newTodo = new Todo();
+ this.todoService.create(this.newTodo);
+ this.todos = this.todoService.index();
 }
+
 
 setEditTodo() {
 this.editTodo = Object.assign({}, this.selected);
@@ -54,19 +50,18 @@ this.editTodo = Object.assign({}, this.selected);
 
 updateTodo(todo: Todo) {
   // tslint:disable-next-line: prefer-for-of
-  for (let i = 0; i < this.todos.length ; i++) {
+  this.todoService.update(todo);
 
-    if (this.todos[i].id === todo.id) {
-      // tslint:disable-next-line: no-unused-expression
-      this.todos[i].task = todo.task;
-      this.todos[i].description = todo.description;
-      this.todos[i].completed = todo.completed;
-    }
-  }
   this.resetTodo();
+  this.todos = this.todoService.index();
 }
+
 resetTodo() {
   this.editTodo = null;
 }
+deleteTodo(id) {
+this.todoService.destroy(id);
+}
+
 
 }

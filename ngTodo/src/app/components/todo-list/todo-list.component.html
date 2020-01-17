@@ -6,12 +6,13 @@
 </h1>
 
 <div *ngIf="!selected">
-  <table>
-    <thead>
+  <table class="table table-hover">
+    <thead class="thead thead-dark">
       <tr>
         <th>Task</th>
         <th>Mark</th>
         <th>Completed</th>
+        <th>Delete</th>
       </tr>
     </thead>
     <tbody>
@@ -19,6 +20,7 @@
         <td (click)='displayTodo(todo)' >{{todo.task}}</td>
         <td><input type="checkbox" name="completed" [(ngModel)]="todo.completed" /></td>
         <td>{{todo.completed}}</td>
+        <td><button type="button" class="btn btn-danger" (click)="deleteTodo(todo.id)">x</button></td>
       </tr>
     </tbody>
     </table>

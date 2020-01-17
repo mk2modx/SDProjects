@@ -1,3 +1,4 @@
+import { TodoService } from './services/todo.service';
 import { ProductService } from './services/product.service';
 import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
@@ -20,7 +21,7 @@ import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
     NgbModule
   ],
   providers: [
-    ProductService
+    ProductService, TodoService
   ],
   bootstrap: [AppComponent]
 })
